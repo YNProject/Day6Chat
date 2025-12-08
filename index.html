@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ラーメン注文・管理システム</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script type="module" src="app.js"></script>
+
+</head>
+
+<body>
+  <div class="scale-wrapper">
+    <main class="app">
+
+      <!-- ① ログイン画面 -->
+      <section id="login-screen" class="login-screen" role="form" aria-label="ログイン画面">
+        <header class="header">
+          <div class="title">オーダー管理</div>
+        </header>
+        <section class="section" aria-labelledby="password-label">
+          <label id="password-label" for="password" class="form-label">パスワード：</label>
+          <input type="password" id="password" name="password" class="form-input" autocomplete="off" />
+          <p>複数のタブを開いて以下のパスワードを入れて下さい</p>
+          <p>管理画面パスワード：admin</p>
+          <p>注文画面パスワード：order</p>
+          <p>確認画面パスワード：user</p>
+        </section>
+
+        <footer class="footer">
+          <button class="btn btn-cancel" type="reset">取消</button>
+          <button class="btn btn-confirm" type="button" onclick="handleLogin()">決定</button>
+        </footer>
+      </section>
+
+      <!-- ② 注文画面 -->
+      <section id="order-screen" class="hidden" role="application" aria-label="注文画面">
+        <header class="header">
+          <div class="title">注文画面</div>
+          <div class="status" aria-live="polite">ご注文を選択してください</div>
+        </header>
+
+        <section class="section" aria-labelledby="ramen-heading">
+          <h2 id="ramen-heading">らーめん</h2>
+          <div class="grid">
+            <label class="tile"><input class="choice" type="radio" name="ramen" value="ramen" />らーめん</label>
+            <label class="tile"><input class="choice" type="radio" name="ramen" value="tokusei-ramen" />特製らーめん</label>
+            <label class="tile"><input class="choice" type="radio" name="ramen" value="tsukemen" />つけめん</label>
+            <label class="tile"><input class="choice" type="radio" name="ramen"
+                value="tokusei-tsukemen" />特製つけめん</label>
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="topping-heading">
+          <h2 id="topping-heading">トッピング</h2>
+          <div class="grid">
+            <label class="tile"><input class="choice" type="checkbox" name="topping" value="chashu" />チャーシュー</label>
+            <label class="tile"><input class="choice" type="checkbox" name="topping" value="egg" />煮卵</label>
+            <label class="tile"><input class="choice" type="checkbox" name="topping" value="negi" />ネギ</label>
+            <label class="tile"><input class="choice" type="checkbox" name="topping" value="menma" />メンマ</label>
+            <label class="tile"><input class="choice" type="checkbox" name="topping" value="nori" />海苔</label>
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="summary-heading">
+          <h2 id="summary-heading">ご注文内容</h2>
+          <div class="summary scrollable-summary"></div>
+        </section>
+
+        <footer class="footer">
+          <button class="btn btn-cancel" type="button" onclick="location.reload()">戻る</button>
+          <button class="btn btn-cancel" type="button">取消</button>
+          <button class="btn btn-confirm" type="button" onclick="confirmOrder()">決定</button>
+        </footer>
+      </section>
+
+      <!-- ③ 管理画面 -->
+      <section id="admin-screen" class="hidden" role="region" aria-label="管理画面">
+        <header class="header">
+          <div class="title">管理画面</div>
+        </header>
+
+        <section class="section">
+          <h2>■在庫</h2>
+          <div class="form-list">
+            <label for="stock-noodle">らーめん用麺（g）</label>
+            <input id="stock-noodle" type="number" min="0" value="0" class="num-input" />
+            <label for="stock-soup">らーめんスープ（杯）</label>
+            <input id="stock-soup" type="number" min="0" value="0" class="num-input" />
+            <label for="stock-tsukemen-noodle">つけめん用麺（g）</label>
+            <input id="stock-tsukemen-noodle" type="number" min="0" value="0" class="num-input" />
+            <label for="stock-tsukemen-soup">つけめんスープ（杯）</label>
+            <input id="stock-tsukemen-soup" type="number" min="0" value="0" class="num-input" />
+            <label for="stock-chashu">チャーシュー（枚）</label>
+            <input id="stock-chashu" type="number" min="0" value="0" class="num-input" />
+            <label for="stock-egg">煮卵（個）</label>
+            <input id="stock-egg" type="number" min="0" value="0" class="num-input" />
+            <label for="stock-negi">ネギ（個）</label>
+            <input id="stock-negi" type="number" min="0" value="0" class="num-input" />
+            <label for="stock-menma">メンマ（個）</label>
+            <input id="stock-menma" type="number" min="0" value="0" class="num-input" />
+            <label for="stock-nori">海苔（枚）</label>
+            <input id="stock-nori" type="number" min="0" value="0" class="num-input" />
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>■提供可能数</h2>
+          <div class="form-list">
+            <label for="serve-ramen">らーめん</label>
+            <input id="serve-ramen" type="number" min="0" value="0" class="num-input" />
+            <label for="serve-tokusei">特製らーめん</label>
+            <input id="serve-tokusei" type="number" min="0" value="0" class="num-input" />
+            <label for="serve-tsukemen">つけめん</label>
+            <input id="serve-tsukemen" type="number" min="0" value="0" class="num-input" />
+            <label for="serve-tokusei-tsukemen">特製つけめん</label>
+            <input id="serve-tokusei-tsukemen" type="number" min="0" value="0" class="num-input" />
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>■並び人数</h2>
+          <div class="form-list">
+            <label for="queue-count">並び人数</label>
+            <input id="queue-count" type="number" min="0" value="0" class="num-input" />
+            <div id="admin-message" class="message-warning"></div>
+          </div>
+        </section>
+
+        <footer class="footer">
+          <button class="btn btn-cancel" type="button" onclick="location.reload()">戻る</button>
+          <button class="btn btn-confirm" type="button" onclick="resetIngredients()">初期値リセット</button>
+        </footer>
+      </section>
+
+      <!-- ④ 確認画面 -->
+      <section id="confirm-screen" class="hidden" role="region" aria-label="確認画面">
+        <header class="header">
+          <div class="title">確認画面</div>
+        </header>
+
+        <section class="section">
+          <h2>並び人数</h2>
+          <div id="confirm-queue" class="confirm-value">--</div>
+        </section>
+
+        <section class="section">
+          <h2>らーめん提供可能数<br />※目安です</h2>
+          <div id="confirm-ramen-count" class="confirm-value">--</div>
+        </section>
+
+        <section class="section">
+          <h2>営業時間</h2>
+          <div class="confirm-value">
+            11:00-14:00<br />
+            18:00-21:00<br />
+            ※20:45ラストオーダー<br />
+            ※売切次第終了です。
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>住所</h2>
+          <div class="confirm-value">
+            東京都中野区中央1 中野坂上ビル1階<br />
+            "らあめん 的中"
+          </div>
+        </section>
+
+        <footer class="footer">
+          <button class="btn btn-cancel" type="button" onclick="location.reload()">戻る</button>
+        </footer>
+      </section>
+
+    </main>
+  </div>
+</body>
+
+</html>

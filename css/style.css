@@ -1,0 +1,450 @@
+:root {
+  --bg-yellow: #ffd84a;
+  --bg-black: #000000;
+  --text-main: #222222;
+  --text-muted: #666666;
+  --accent: #e53935;
+  --accent-dark: #c62828;
+  --cancel: #888888;
+  --line: #e9c942;
+  --tile: #fff4b0;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  --shadow-strong: 0 10px 24px rgba(0, 0, 0, 0.12);
+  --spacing: 16px;
+  --spacing-lg: 20px;
+  --spacing-xl: 28px;
+  --footer-height: 24px;
+  --header-height: 24px;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP",
+    "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+}
+
+/* ベース背景（PCでは黒余白） */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--bg-black); /* ← 明示的に background-color に */
+  color: var(--text-main);
+  font-family: var(--font);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.scale-wrapper {
+  transform-origin: top center;
+}
+
+.app {
+  width: 430px;
+  height: 932px;
+  background: #ffd84a;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* スケーリング用ラッパー */
+.scale-wrapper {
+  /* 画面に収まるようにスケーリング */
+  transform: scale(
+    min(
+      calc(100vw / 430),
+      calc(100vh / 932)
+    )
+  );
+  transform-origin: center center; /* 上下中央基準に変更 */
+max-width: 100%;
+}
+
+/* アプリ本体（スマホサイズ固定） */
+.app {
+  width: 430px;
+  height: 932px;
+  max-width: 100%;
+  background: var(--bg-yellow);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ヘッダー（共通） */
+.header {
+  padding: var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--line);
+  background: rgba(255, 240, 146, 0.45);
+  min-height: var(--header-height);
+}
+
+.title {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.status {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* セクション（高さ調整） */
+.section {
+  padding: var(--spacing-lg);
+  flex: 1;
+  overflow-y: auto;
+  max-height: calc(100% - var(--header-height) - var(--footer-height));
+}
+
+.confirm-screen .section {
+  flex: unset;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.section+.section {
+  border-top: 1px solid var(--line);
+}
+
+.section h2 {
+  margin: 0 0 var(--spacing);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+/* グリッド（注文画面） */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing);
+}
+
+@media (min-width: 540px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* タイル（注文画面の選択ボタン） */
+.tile {
+  position: relative;
+  background: var(--tile);
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 600;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.12s ease,
+    filter 0.12s ease, opacity 0.12s ease;
+}
+
+.tile:active {
+  transform: translateY(1px);
+  box-shadow: var(--shadow-strong);
+}
+
+.choice {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tile:has(.choice:focus-visible) {
+  outline: 3px solid #f29f05;
+  outline-offset: 2px;
+}
+
+.tile:has(.choice:checked) {
+  outline: 2px solid #f29f05;
+  background: #ffe89a;
+}
+
+/* 売り切れ表示（重ね） */
+.tile.soldout {
+  filter: grayscale(0.3);
+  opacity: 0.85;
+}
+
+.tile.soldout::after {
+  content: "売り切れ";
+  color: #e40000;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.92);
+  padding: 2px 8px;
+  border-radius: 6px;
+  box-shadow: var(--shadow);
+  pointer-events: none;
+}
+
+/* disabled の視覚ヒント */
+.tile:has(.choice:disabled) {
+  cursor: not-allowed;
+  filter: grayscale(0.4);
+  opacity: 0.7;
+}
+
+/* 注文サマリー */
+.summary {
+  background: #ffea9e;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  padding: var(--spacing);
+}
+
+.summary-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: var(--spacing);
+  padding: 10px 0;
+  border-bottom: 1px dashed #f1d36a;
+}
+
+.summary-item:last-child {
+  border-bottom: none;
+}
+
+.summary-name {
+  font-weight: 700;
+}
+
+.qty {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff7cd;
+  border-radius: 999px;
+  padding: 6px 8px;
+  box-shadow: var(--shadow);
+}
+
+.qty button {
+  all: unset;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #ffe089;
+  cursor: pointer;
+  font-weight: 700;
+  line-height: 1;
+  user-select: none;
+}
+
+.qty button:hover {
+  background: #ffd670;
+}
+
+.qty .count {
+  min-width: 20px;
+  text-align: center;
+  font-weight: 700;
+}
+
+/* ご注文内容スクロール対応 */
+.scrollable-summary {
+  max-height: 160px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* フッター（共通・固定） */
+.footer {
+  display: flex;
+  justify-content: flex-start;
+  gap: var(--spacing);
+  padding: var(--spacing-lg);
+  border-top: 2px solid var(--line);
+  background: rgba(255, 240, 146, 0.45);
+  min-height: var(--footer-height);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.footer .btn {
+  flex: 1;
+  text-align: center;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 18px;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+/* ボタンデザイン統一 */
+.btn-back {
+  background: var(--cancel);
+  color: white;
+}
+
+.btn-back:hover {
+  background: #666;
+}
+
+.btn-cancel {
+  background: var(--cancel);
+  color: white;
+}
+
+.btn-confirm {
+  background: var(--accent);
+  color: white;
+}
+
+.btn-confirm:hover {
+  background: var(--accent-dark);
+}
+
+.btn:disabled,
+.btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ログイン画面 */
+.login-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  height: 100%;
+}
+
+.form-label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.form-input {
+  width: 100%;
+  max-width: 320px;
+  font-size: 1rem;
+  padding: 12px 14px;
+  border: 2px solid #f1d36a;
+  border-radius: var(--radius-sm);
+  background: #fffef0;
+  box-shadow: var(--shadow);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #f29f05;
+  background: #fffde0;
+}
+
+/* 管理画面 */
+.form-list {
+  display: grid;
+  grid-template-columns: auto minmax(6ch, 80px);
+  row-gap: 4px;
+  column-gap: var(--spacing-lg);
+  align-items: center;
+}
+
+.form-list label {
+  grid-column: 1 / 2;
+  font-weight: 600;
+}
+
+.form-list input.num-input {
+  grid-column: 2 / 3;
+  justify-self: end;
+  width: 6ch;
+  padding: 4px 8px;
+  font-size: 1rem;
+  border: 2px solid #f1d36a;
+  border-radius: var(--radius-sm);
+  background: #fffef0;
+  box-shadow: var(--shadow);
+  text-align: right;
+}
+
+.form-list input.num-input:focus {
+  outline: none;
+  border-color: #f29f05;
+  background: #fffde0;
+}
+
+.message-warning {
+  color: #e40000;
+  /* 赤色 */
+  font-weight: bold;
+  /* 太字 */
+  margin-top: 8px;
+}
+
+/* 確認画面 */
+.confirm-value {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 8px 0;
+}
+
+/* 確認画面専用のセクション調整 */
+#confirm-screen .section {
+  flex: none;
+  overflow: visible;
+  max-height: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.confirm-screen .confirm-value {
+  text-align: center;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+/* アクセシビリティ補助（キーボード操作） */
+.tile:focus-within {
+  outline: 3px solid #f29f05;
+  outline-offset: 2px;
+}
