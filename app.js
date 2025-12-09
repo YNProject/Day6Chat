@@ -111,36 +111,36 @@ function calculateServeCounts() {
 // 管理画面に反映
 // -----------------------------
 function applyStateToAdmin() {
-  const $ = (id) => document.getElementById(id);
+    const $ = (id) => document.getElementById(id);
 
-  // 在庫反映
-  $("stock-noodle").value = state.ingredients.noodle_ramen_g;
-  $("stock-soup").value = state.ingredients.soup_ramen;
-  $("stock-tsukemen-noodle").value = state.ingredients.noodle_tsukemen_g;
-  $("stock-tsukemen-soup").value = state.ingredients.soup_tsukemen;
-  $("stock-chashu").value = state.ingredients.chashu;
-  $("stock-egg").value = state.ingredients.egg;
-  $("stock-negi").value = state.ingredients.negi;
-  $("stock-menma").value = state.ingredients.menma;
-  $("stock-nori").value = state.ingredients.nori;
+    // 在庫反映
+    $("stock-noodle").value = state.ingredients.noodle_ramen_g;
+    $("stock-soup").value = state.ingredients.soup_ramen;
+    $("stock-tsukemen-noodle").value = state.ingredients.noodle_tsukemen_g;
+    $("stock-tsukemen-soup").value = state.ingredients.soup_tsukemen;
+    $("stock-chashu").value = state.ingredients.chashu;
+    $("stock-egg").value = state.ingredients.egg;
+    $("stock-negi").value = state.ingredients.negi;
+    $("stock-menma").value = state.ingredients.menma;
+    $("stock-nori").value = state.ingredients.nori;
 
-  // 提供可能数反映
-  const serve = calculateServeCounts();
-  $("serve-ramen").value = serve.ramen;
-  $("serve-tokusei").value = serve.tokuseiRamen;
-  $("serve-tsukemen").value = serve.tsukemen;
-  $("serve-tokusei-tsukemen").value = serve.tokuseiTsukemen;
+    // 提供可能数反映
+    const serve = calculateServeCounts();
+    $("serve-ramen").value = serve.ramen;
+    $("serve-tokusei").value = serve.tokuseiRamen;
+    $("serve-tsukemen").value = serve.tsukemen;
+    $("serve-tokusei-tsukemen").value = serve.tokuseiTsukemen;
 
-  // 並び人数
-  $("queue-count").value = state.queue.waitingCount;
+    // 並び人数
+    $("queue-count").value = state.queue.waitingCount;
 
-  // 警告メッセージ
-  const msgEl = $("admin-message");
-  if (state.queue.waitingCount >= serve.ramen - 4) {
-    msgEl.textContent = "完売しそうです。";
-  } else {
-    msgEl.textContent = "";
-  }
+    // 警告メッセージ
+    const msgEl = $("admin-message");
+    if (state.queue.waitingCount >= serve.ramen - 4) {
+        msgEl.textContent = "完売しそうです。";
+    } else {
+        msgEl.textContent = "";
+    }
 }
 
 
@@ -435,12 +435,12 @@ window.handleLogin = handleLogin;
 window.confirmOrder = confirmOrder;
 
 function scaleApp() {
-  const appHeight = 932;   // 基準スマホの高さ
-  const scale = window.innerHeight / appHeight;
-  const wrapper = document.querySelector('.scale-wrapper');
-  if (wrapper) {
-    wrapper.style.transform = `scale(${scale})`;
-  }
+    const appHeight = 932;   // 基準スマホの高さ
+    const scale = window.innerHeight / appHeight;
+    const wrapper = document.querySelector('.scale-wrapper');
+    if (wrapper) {
+        wrapper.style.transform = `scale(${scale})`;
+    }
 }
 
 window.addEventListener('resize', scaleApp);
