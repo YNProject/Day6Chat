@@ -134,7 +134,7 @@ function applyStateToAdmin() {
   // 並び人数
   $("queue-count").value = state.queue.waitingCount;
 
-  // ✅ 警告メッセージ
+  // 警告メッセージ
   const msgEl = $("admin-message");
   if (state.queue.waitingCount >= serve.ramen - 4) {
     msgEl.textContent = "完売しそうです。";
@@ -315,7 +315,7 @@ function confirmOrder() {
     orderList = [];
     renderSummary();
 
-    // ✅ ラジオボタンとチェックボックスをリセット
+    // ボタンをリセット
     document.querySelectorAll('input[name="ramen"]').forEach(el => el.checked = false);
     document.querySelectorAll('input[name="topping"]').forEach(el => el.checked = false);
 }
@@ -344,7 +344,7 @@ function resetIngredients() {
     applyStateToConfirm();   // 確認画面に反映
 }
 
-// グローバル公開（HTMLから呼べるように）
+// HTMLから呼べるように
 window.resetIngredients = resetIngredients;
 
 // -----------------------------
@@ -380,7 +380,7 @@ function bindAdminInputs() {
     // 並び人数
     document.getElementById("queue-count").addEventListener("input", (e) => {
         state.queue.waitingCount = Math.max(0, Number(e.target.value) || 0);
-        saveQueue();            // ← 在庫ではなくキューを保存
+        saveQueue();            // キューを保存
         applyStateToConfirm();  // 確認画面に即反映
     });
 
