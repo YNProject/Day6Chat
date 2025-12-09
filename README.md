@@ -1,5 +1,5 @@
 # ①完売確認サービス
-![Game Image](.img/XXXX.png)
+![Game Image](./img/playimg.png)
 ## ②説明
 - ラーメン店の残り提供可能数や完売状況、待ち状況を確認できるサービスです。今から行って食べれるかどうか？の判断に使えます！
 
@@ -32,6 +32,4 @@ https://ynproject.github.io/XXXXXXXXX/
 ## ⑦フリー項目（感想、シェアしたいこと等なんでも）
 - プレイイメージです
 
-| ログイン画面 | 管理画面 | 注文画面 | 確認画面 |
-|:--------------------:|:--------------------:|:--------------------:|:--------------------:|
-| ![GIF 1](./img/XXXX.gif) | ![GIF 2](./img/XXXX.gif) | ![GIF 3](./img/XXXX.gif) | ![GIF 4](./img/XXXX.gif) |
+<img src="./img/playimg.gif" width="600">
