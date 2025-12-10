@@ -12,7 +12,7 @@
 -  確認画面では待ち人数と残り提供可能数が表示されます
 
 ## ③アプリのデプロイURL
-https://ynproject.github.io/XXXXXXXXX/
+https://ynproject.github.io/Day6Chat/
 - app.js内の firebaseConfigに各自の値を入れてから使ってください。
 
 ## ④アプリのログイン用IDまたはPassword（ある場合）
